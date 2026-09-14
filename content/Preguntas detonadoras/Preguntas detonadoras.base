@@ -1,0 +1,72 @@
+filters:
+  and:
+    - file.inFolder("Preguntas detonadoras")
+    - file.hasTag("pregunta")
+    - not:
+        - 'file.basename.startsWith("_")'
+
+formulas:
+  color: 'if(categoria == "epistémica", "🔵 Epistémica", if(categoria == "ética", "🟣 Ética", if(categoria == "estructural", "🔴 Estructural", if(categoria == "situada", "🟢 Situada", if(categoria == "contrafáctica", "🟡 Contrafáctica", if(categoria == "metodológica", "🟠 Metodológica", "⚪ Sin categoría"))))))'
+  tejido: 'if(conecta_con, conecta_con.length.toString() + " enlaces", "aislada ⚠️")'
+  autoria: 'if(origen == "Claude", "🤖 Claude", if(origen == "clase", "🎓 Clase", "👤 " + origen))'
+
+properties:
+  formula.color:
+    displayName: "Categoría"
+  formula.tejido:
+    displayName: "Tejido"
+  formula.autoria:
+    displayName: "Origen"
+  tension:
+    displayName: "Tensión que abre"
+  formato_actividad:
+    displayName: "Formato"
+  deriva_de:
+    displayName: "Deriva de"
+  conecta_con:
+    displayName: "Conecta con"
+
+views:
+  - type: table
+    name: "Todas las preguntas"
+    order:
+      - file.name
+      - formula.color
+      - tension
+      - formato_actividad
+      - formula.autoria
+      - estado
+  - type: table
+    name: "Por categoría"
+    groupBy:
+      property: categoria
+      direction: ASC
+    order:
+      - file.name
+      - tension
+      - formato_actividad
+      - formula.tejido
+  - type: table
+    name: "Aisladas (falta tejerlas)"
+    filters:
+      and:
+        - 'conecta_con.isEmpty()'
+    order:
+      - file.name
+      - formula.color
+      - deriva_de
+  - type: table
+    name: "Listas para llevar al aula"
+    filters:
+      and:
+        - 'estado == "probada"'
+    order:
+      - file.name
+      - formula.color
+      - formato_actividad
+  - type: cards
+    name: "Mural"
+    order:
+      - file.name
+      - tension
+      - formula.color

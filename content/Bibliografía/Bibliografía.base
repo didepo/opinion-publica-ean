@@ -1,0 +1,121 @@
+filters:
+  and:
+    - file.inFolder("Bibliografía")
+    - file.hasTag("referencia")
+    - not:
+        - 'file.basename.startsWith("_")'
+
+formulas:
+  cita_mla: 'html(if(autores, if(autores.length == 1, autores.join(""), if(autores.length == 2, autores.slice(0, 1).join("") + ", y " + autores.slice(1, 2).join(""), autores.slice(0, 1).join("") + ", et al.")) + ". ", "") + "“" + titulo + ".” " + "<em>" + publicacion + "</em>" + if(volumen, ", vol. " + volumen.toString(), "") + if(numero, ", no. " + numero.toString(), "") + if(anio, ", " + anio.toString(), "") + if(paginas, ", pp. " + paginas, "") + "." + if(repositorio, " <em>" + repositorio + "</em>,", "") + if(doi, " https://doi.org/" + doi + ".", if(url, " " + url + ".", "")) + if(fecha_acceso, " Consultado el " + date(fecha_acceso).format("D MMM. YYYY") + ".", ""))'
+  acceso: 'if(acceso_abierto, "🔓 Abierto", "🔒 Cerrado")'
+  enlace: 'if(doi, link("https://doi.org/" + doi, "DOI"), if(url, link(url, "Ver"), ""))'
+  antiguedad: 'if(anio, (today().year - anio).toString() + " años", "")'
+
+properties:
+  formula.cita_mla:
+    displayName: "Referencia MLA"
+  formula.acceso:
+    displayName: "Acceso"
+  formula.enlace:
+    displayName: "Ir"
+  formula.antiguedad:
+    displayName: "Antigüedad"
+  titulo:
+    displayName: "Título"
+  autores:
+    displayName: "Autoría"
+  publicacion:
+    displayName: "Publicación"
+  anio:
+    displayName: "Año"
+  repositorio:
+    displayName: "Repositorio"
+  acceso_abierto:
+    displayName: "Acceso abierto"
+  licencia:
+    displayName: "Licencia"
+  hallado_con:
+    displayName: "Hallado con"
+  verificado_por:
+    displayName: "Verificado por"
+  fecha_acceso:
+    displayName: "Consultado"
+
+views:
+  - type: table
+    name: "Todas las referencias"
+    order:
+      - formula.cita_mla
+      - estado
+      - formula.acceso
+      - hallado_con
+      - tema
+      - formula.enlace
+    summaries:
+      formula.cita_mla: Filled
+
+  - type: table
+    name: "Por verificar"
+    filters:
+      and:
+        - 'estado == "por verificar"'
+    order:
+      - file.name
+      - autores
+      - publicacion
+      - anio
+      - doi
+      - formula.acceso
+      - hallado_con
+    summaries:
+      file.name: Filled
+
+  - type: table
+    name: "Listas para citar"
+    filters:
+      and:
+        - 'estado == "verificada"'
+        - 'acceso_abierto == true'
+    order:
+      - formula.cita_mla
+      - tema
+      - licencia
+      - verificado_por
+    summaries:
+      formula.cita_mla: Filled
+
+  - type: table
+    name: "Por tema"
+    groupBy:
+      property: tema
+      direction: ASC
+    order:
+      - formula.cita_mla
+      - anio
+      - formula.acceso
+      - estado
+
+  - type: table
+    name: "Acceso cerrado (revisar alternativa abierta)"
+    filters:
+      and:
+        - 'acceso_abierto != true'
+    order:
+      - file.name
+      - autores
+      - publicacion
+      - anio
+      - url
+      - estado
+
+  - type: cards
+    name: "Galería por año"
+    order:
+      - file.name
+      - autores
+      - publicacion
+      - anio
+      - formula.acceso
+    groupBy:
+      property: anio
+      direction: DESC

@@ -1,0 +1,36 @@
+filters:
+  and:
+    - file.inFolder("Lecturas críticas")
+    - file.hasTag("lectura-crítica")
+    - not:
+        - file.basename.startsWith("_")
+formulas:
+  quien: if(lector_tipo == "IA", "🤖 " + lector, "👤 " + lector)
+properties:
+  formula.quien:
+    displayName: Leyó
+  fecha_lectura:
+    displayName: Fecha
+  fuente:
+    displayName: Fuente leída
+  soporte_leido:
+    displayName: Qué se leyó
+views:
+  - type: table
+    name: Todas las lecturas
+    order:
+      - file.name
+      - formula.quien
+      - fuente
+      - fecha_lectura
+      - estado
+  - type: table
+    name: Lecturas de IA (requieren contraparte humana)
+    filters:
+      and:
+        - lector_tipo == "IA"
+    order:
+      - file.name
+      - fuente
+      - soporte_no_leido
+      - contraparte
