@@ -13,7 +13,7 @@ paginas:
 repositorio: SciELO
 doi: 10.32870/cys.v2023.8518
 url: https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S0188-252X2023000100418
-fecha_acceso: 2026-09-14
+fecha_acceso: 2026-09-14T12:00:00
 acceso_abierto: true
 licencia: CC BY-NC 4.0
 idioma: es

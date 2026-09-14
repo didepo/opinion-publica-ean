@@ -37,7 +37,13 @@ La fórmula respeta ese orden tal como lo escribas. Si inviertes el segundo auto
 | `repositorio` | Contenedor 2 | SciELO, Redalyc, DOAJ, Dialnet, JSTOR |
 | `doi` | Ubicación | Solo el identificador: `10.32870/cys.v2023.8518`, sin `https://doi.org/` |
 | `url` | Ubicación | Solo si **no** hay DOI. MLA prefiere el DOI |
-| `fecha_acceso` | Fecha de consulta | Formato `AAAA-MM-DD` |
+| `fecha_acceso` | Fecha de consulta | Formato `AAAA-MM-DDT12:00:00` — ver abajo |
+
+### Por qué la fecha lleva `T12:00:00`
+
+Una fecha sin hora se interpreta como medianoche en horario universal. Al mostrarla en Bogotá —cinco horas atrás— retrocede al día anterior, y la cita termina diciendo que consultamos el artículo un día antes de haberlo hecho. Peor todavía: el servidor que construye el sitio trabaja en horario universal y **sí** muestra el día correcto, así que la misma cita aparece con dos fechas distintas según dónde se mire.
+
+Fijar la hora al mediodía elimina el problema en cualquier huso horario. Es un detalle mínimo y es exactamente la clase de detalle que una bibliografía no puede permitirse.
 
 ## Las tres propiedades que sostienen el proyecto
 

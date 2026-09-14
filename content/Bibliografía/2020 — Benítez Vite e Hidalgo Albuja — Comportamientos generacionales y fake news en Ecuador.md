@@ -13,7 +13,7 @@ paginas: "208-229"
 repositorio: Redalyc
 doi: 10.29394/Scientific.issn.2542-2987.2020.5.16.11.208-229
 url: https://www.redalyc.org/journal/5636/563662985012/html/
-fecha_acceso: 2026-09-14
+fecha_acceso: 2026-09-14T12:00:00
 acceso_abierto: true
 licencia: CC BY-NC-SA 4.0
 idioma: es
