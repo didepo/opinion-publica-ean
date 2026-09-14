@@ -32,8 +32,8 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - name: Instalar dependencias
         run: npm ci
-      - name: Instalar plugins de Quartz
-        run: npx quartz plugin install
+      - name: Verificar plugins de Quartz
+        run: npx quartz plugin install --from-config
       - name: Construir sitio
         run: npx quartz build
       - name: Subir artefacto
